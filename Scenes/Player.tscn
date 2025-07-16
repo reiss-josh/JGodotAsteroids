@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhkfdbjkehmka"]
+
+[ext_resource type="Script" uid="uid://bcuea650gufn8" path="res://Scripts/player.gd" id="1_kyqiw"]
+[ext_resource type="Texture2D" uid="uid://b5mjh5nl42lej" path="res://Sprites/spaceship.png" id="1_xhfnw"]
+[ext_resource type="AudioStream" uid="uid://dveg7k0b5er54" path="res://Sfx/shootBullet.wav" id="3_5ixxa"]
+[ext_resource type="AudioStream" uid="uid://cexki6lclmkb2" path="res://Sfx/moveThruster.wav" id="3_dewec"]
+[ext_resource type="AudioStream" uid="uid://jy3h2c5xy2rf" path="res://Sfx/rotationThruster.wav" id="4_5ixxa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhfnw"]
+size = Vector2(26, 26)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kpjcp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xhfnw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="Area2D"]
+scale = Vector2(1.00191, 1)
+script = ExtResource("1_kyqiw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xhfnw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 1.5708
+sprite_frames = SubResource("SpriteFrames_kpjcp")
+
+[node name="shootBulletSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_5ixxa")
+
+[node name="moveThrusterSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_dewec")
+
+[node name="rotThrusterSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5ixxa")
