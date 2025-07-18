@@ -1,13 +1,15 @@
 extends Area2D
 
-@export var moveSpeedMax = 175
-@export var moveAccel = 150
-@export var moveDamping = 0.95
-@export var rotSpeedMax = 5
-@export var rotAccel = 10
+@export var moveSpeedMax = 5
+@export var moveAccel = 5
+@export var moveDamping = 0.993
+@export var rotSpeedMax = 10
+@export var rotAccel = 15
 @export var rotDamping = 0.9
 @export var shootSpeed = 60
 @export var bulletSpawnOffset = 32
+var playerOffset = 8
+var currVelocity
 var shootBuffered
 var shootTimer
 var currMoveSpeed = moveAccel
@@ -15,19 +17,20 @@ var currRotSpeed = -rotAccel
 var screen_size
 var bulletPrefab = load("res://Scenes/Bullet.tscn")
 var bulletInstance
+signal killed
 
 #ready
 func _ready():
 	screen_size = get_viewport_rect().size
 	shootBuffered = 0
 	shootTimer = 0
+	currVelocity = Vector2.ZERO
 
 #process
 func _process(delta):
 	var move_input = 0 #The player's move input
 	var rot_input = 0 #The player's rotation input
-	#var move_direction_changed = false
-	#var rot_direction_changed = false
+	
 	if Input.is_action_pressed("rotate_right"):
 		rot_input += 1
 	if Input.is_action_pressed("rotate_left"):
@@ -39,6 +42,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("shoot_shoot"):
 		shootBuffered = 1
 
+	#play sounds for movement inputs
 	if(not $moveThrusterSfx.playing and (Input.is_action_just_pressed("move_forward") or Input.is_action_just_pressed("move_backward"))):
 		$moveThrusterSfx.pitch_scale = randf_range(0.75, 1.5)
 		$moveThrusterSfx.play()
@@ -46,26 +50,49 @@ func _process(delta):
 		$rotThrusterSfx.pitch_scale = randf_range(0.75, 1.5)
 		$rotThrusterSfx.play()
 		
-	#accelerate
-	if (move_input != 0):
-		currMoveSpeed += move_input * moveAccel * delta
+	#play animation if moving
+	if move_input != 0:
+		$AnimatedSprite2D.play()
 	else:
-		currMoveSpeed = (currMoveSpeed * moveDamping)
+		$AnimatedSprite2D.stop()
+		
+#rotation update
+	#check rotation inputs and calculate rotation speed
 	if (rot_input != 0):
 		currRotSpeed += rot_input * rotAccel * delta
 	else:
 		currRotSpeed = (currRotSpeed * rotDamping)
-		
-	#speedcap
-	currMoveSpeed = clamp(currMoveSpeed, -moveSpeedMax, moveSpeedMax)
+	#cap rotation speed
 	currRotSpeed = clamp(currRotSpeed, -rotSpeedMax, rotSpeedMax)
-
-	#do the moving
-	var facing_vector = Vector2(cos(rotation),sin(rotation))
+	#do rotation update
 	rotation += currRotSpeed * delta
-	position += facing_vector * currMoveSpeed * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
 	
+
+#movement update
+	#get rotation angle as a vector
+	var facing_vector = Vector2(cos(rotation),sin(rotation))
+	#check movement inputs and calculate velocity
+	if (move_input != 0):
+		currVelocity += move_input * facing_vector * moveAccel * delta
+	else:
+		currVelocity = (currVelocity * moveDamping)
+	#cap movement velocity by magnitude
+	currVelocity = currVelocity.limit_length(moveSpeedMax)
+	#print(currVelocity)
+	#actually move
+	position += currVelocity
+	
+	if(position.x < 0-playerOffset):
+		position.x = screen_size.x+(playerOffset/2)
+	elif(position.x > screen_size.x+playerOffset):
+		position.x = 0-(playerOffset/2)
+	elif(position.y < 0-playerOffset):
+		position.y = screen_size.y+(playerOffset/2)
+	elif(position.y > screen_size.y+playerOffset):
+		position.y = 0-(playerOffset/2)
+	#position = position.clamp(Vector2.ZERO, screen_size)
+
+#shooting
 	if(shootTimer > 0):
 		shootTimer -= delta*100
 	elif(shootBuffered == 1):
@@ -79,12 +106,10 @@ func _process(delta):
 		$shootBulletSfx.play()
 	else:
 		shootTimer = 0
-		#
-	
-	#velocity = velocity.normalized() * moveSpeed
-	
-	#play animation if moving
-	if move_input != 0:
-		$AnimatedSprite2D.play()
-	else:
-		$AnimatedSprite2D.stop()
+		
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("asteroids"):
+		print("dead time")
+		killed.emit()
+		$deathSfx.play()
+		queue_free()

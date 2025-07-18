@@ -29,3 +29,5 @@ sprite_frames = SubResource("SpriteFrames_14k46")
 rotation = 1.5708
 scale = Vector2(1, 1.027)
 shape = SubResource("RectangleShape2D_qvus8")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

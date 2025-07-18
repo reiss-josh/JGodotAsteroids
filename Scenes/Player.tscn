@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhkfdbjkehmka"]
+[gd_scene load_steps=9 format=3 uid="uid://dhkfdbjkehmka"]
 
 [ext_resource type="Script" uid="uid://bcuea650gufn8" path="res://Scripts/player.gd" id="1_kyqiw"]
 [ext_resource type="Texture2D" uid="uid://b5mjh5nl42lej" path="res://Sprites/spaceship.png" id="1_xhfnw"]
 [ext_resource type="AudioStream" uid="uid://dveg7k0b5er54" path="res://Sfx/shootBullet.wav" id="3_5ixxa"]
 [ext_resource type="AudioStream" uid="uid://cexki6lclmkb2" path="res://Sfx/moveThruster.wav" id="3_dewec"]
 [ext_resource type="AudioStream" uid="uid://jy3h2c5xy2rf" path="res://Sfx/rotationThruster.wav" id="4_5ixxa"]
+[ext_resource type="AudioStream" uid="uid://dk5h6j25a6dxq" path="res://Sfx/deathSfx.wav" id="6_nn08x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xhfnw"]
 size = Vector2(26, 26)
@@ -39,3 +40,8 @@ stream = ExtResource("3_dewec")
 
 [node name="rotThrusterSfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_5ixxa")
+
+[node name="deathSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nn08x")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
