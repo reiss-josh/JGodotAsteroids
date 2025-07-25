@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpuhc5gjprjsc"]
+
+[ext_resource type="Script" uid="uid://ct8iyi0lodwi8" path="res://Scripts/volume_slider.gd" id="1_qyomt"]
+[ext_resource type="AudioStream" uid="uid://cd2meqwwfxlg4" path="res://Sfx/TestTone.wav" id="2_x8kpw"]
+
+[node name="VolumeSlider" type="HSlider"]
+min_value = -10.0
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("1_qyomt")
+
+[node name="TestTonePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_x8kpw")
+
+[connection signal="drag_ended" from="." to="." method="_on_drag_ended"]
+[connection signal="value_changed" from="." to="." method="_on_value_changed"]

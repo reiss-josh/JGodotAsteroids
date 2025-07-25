@@ -1,9 +1,92 @@
-[gd_scene load_steps=2 format=3 uid="uid://dr8xo484h04rn"]
+[gd_scene load_steps=3 format=3 uid="uid://dr8xo484h04rn"]
 
 [ext_resource type="Script" uid="uid://ddme2o77yqppk" path="res://Scripts/HUD.gd" id="1_ujnjh"]
+[ext_resource type="PackedScene" uid="uid://cpuhc5gjprjsc" path="res://Scenes/VolumeSlider.tscn" id="2_psnte"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_ujnjh")
+
+[node name="MainMenu" type="VBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -119.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="MainMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "start game!! start me!!
+click me to play and start the game!!"
+
+[node name="QuitButton" type="Button" parent="MainMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+text = "quit game"
+
+[node name="MasterVolumeHBox" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MainMenu/MasterVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Master Volume:"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/MasterVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="VolumeSlider" parent="MainMenu/MasterVolumeHBox/MarginContainer" instance=ExtResource("2_psnte")]
+layout_mode = 2
+size_flags_vertical = 4
+value = -5.0
+
+[node name="SFXVolumeHBox" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MainMenu/SFXVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "SFX Volume:"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/SFXVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="VolumeSlider" parent="MainMenu/SFXVolumeHBox/MarginContainer" instance=ExtResource("2_psnte")]
+layout_mode = 2
+size_flags_vertical = 4
+targetBus = "SFX"
+
+[node name="BGMVolumeHBox" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MainMenu/BGMVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "BGM Volume:"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/BGMVolumeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="VolumeSlider" parent="MainMenu/BGMVolumeHBox/MarginContainer" instance=ExtResource("2_psnte")]
+layout_mode = 2
+size_flags_vertical = 4
+targetBus = "BGM"
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_right = 40.0
@@ -12,11 +95,6 @@ theme_override_font_sizes/font_size = 32
 text = "0"
 horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="."]
-visible = false
-offset_right = 8.0
-offset_bottom = 8.0
-
 [node name="Message" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -24,10 +102,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -127.5
-offset_top = -11.5
+offset_top = -22.5
 offset_right = 127.5
-offset_bottom = 11.5
+offset_bottom = 22.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
+
+[connection signal="start_game" from="." to="MainMenu" method="_on_hud_start_game"]
+[connection signal="button_up" from="MainMenu/HBoxContainer/StartButton" to="." method="_on_start_button_button_up"]
+[connection signal="button_up" from="MainMenu/HBoxContainer/QuitButton" to="." method="_on_quit_button_button_up"]

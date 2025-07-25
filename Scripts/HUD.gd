@@ -6,8 +6,17 @@ func update_score(score):
 	print(score)
 	$ScoreLabel.text = str(score)
 
-
-func _on_player_killed() -> void:
+func _on_game_over() -> void:
 	var score = $ScoreLabel.text
 	$ScoreLabel.text = ""
 	$Message.text = "sorry ... you have losing the game :(\nno more game for you :(\nyour score was:\n"+str(score)
+	$MainMenu.visible = true
+
+func _on_start_button_button_up() -> void:
+	$MainMenu.visible = false
+	$Message.text = ""
+	start_game.emit()
+
+
+func _on_quit_button_button_up() -> void:
+	get_tree().quit()

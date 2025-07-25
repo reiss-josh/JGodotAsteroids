@@ -17,8 +17,6 @@ func _process(delta):
 	or position.y < 0-bulletOffset or position.y > screen_size.y+bulletOffset):
 		queue_free()
 
-
-
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("asteroids"):
 		#print("bullet killing")

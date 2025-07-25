@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bgfp1tco4okuf"]
+[gd_scene load_steps=6 format=3 uid="uid://bgfp1tco4okuf"]
 
-[ext_resource type="PackedScene" uid="uid://dhkfdbjkehmka" path="res://Scenes/Player.tscn" id="1_3mqji"]
 [ext_resource type="Script" uid="uid://b1n0lcoe0ew2y" path="res://Scripts/mainscene.gd" id="1_tr2i4"]
 [ext_resource type="Texture2D" uid="uid://belhyhhja8dv8" path="res://Sprites/background.png" id="2_7rqgy"]
 [ext_resource type="PackedScene" uid="uid://dr8xo484h04rn" path="res://Scenes/HUD.tscn" id="4_7rqgy"]
+[ext_resource type="AudioStream" uid="uid://dk5h6j25a6dxq" path="res://Sfx/deathSfx.wav" id="5_qxria"]
+[ext_resource type="AudioStream" uid="uid://b7rl1w8tavv4x" path="res://Sfx/fuckery2.wav" id="6_y4jh7"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_tr2i4")
@@ -13,10 +14,16 @@ z_index = -7
 position = Vector2(320, 240)
 texture = ExtResource("2_7rqgy")
 
-[node name="Player" parent="." instance=ExtResource("1_3mqji")]
-position = Vector2(320, 240)
-
 [node name="HUD" parent="." instance=ExtResource("4_7rqgy")]
 
-[connection signal="area_entered" from="Player" to="." method="_on_player_area_entered"]
-[connection signal="killed" from="Player" to="HUD" method="_on_player_killed"]
+[node name="deathSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_qxria")
+bus = &"SFX"
+
+[node name="musicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_y4jh7")
+volume_db = -7.0
+bus = &"BGM"
+
+[connection signal="gameOver" from="." to="HUD" method="_on_game_over"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]

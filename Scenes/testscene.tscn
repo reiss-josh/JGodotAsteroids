@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bg0oy5x0hmh1k"]
+
+[ext_resource type="PackedScene" uid="uid://dc1msjlqwir68" path="res://Scenes/Asteroid.tscn" id="1_r2sr7"]
+
+[node name="Testscene" type="Node2D"]
+
+[node name="Asteroid" parent="." instance=ExtResource("1_r2sr7")]
+position = Vector2(279, 257)
+asteroidStartingAngle = Vector2(1, 0)
+
+[node name="Asteroid2" parent="." instance=ExtResource("1_r2sr7")]
+position = Vector2(347, 264)
+asteroidStartingAngle = Vector2(-1, 0)
+
+[node name="Asteroid3" parent="." instance=ExtResource("1_r2sr7")]
+position = Vector2(301, 196)
+asteroidStartingAngle = Vector2(1, -1)
