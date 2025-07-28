@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var moveSpeedMax = 200
+@export var moveSpeedMax = 300
 @export var moveAccel = 3
 @export var moveDamping = 0.993
 @export var rotSpeedMax = 7
