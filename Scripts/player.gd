@@ -1,12 +1,12 @@
 extends Area2D
 
-@export var moveSpeedMax = 5
-@export var moveAccel = 5
+@export var moveSpeedMax = 200
+@export var moveAccel = 3
 @export var moveDamping = 0.993
-@export var rotSpeedMax = 10
-@export var rotAccel = 15
+@export var rotSpeedMax = 7
+@export var rotAccel = 3
 @export var rotDamping = 0.9
-@export var shootSpeed = 60
+@export var shootSpeed = 30
 @export var bulletSpawnOffset = 32
 var playerOffset = 8
 var currVelocity
@@ -59,7 +59,7 @@ func _process(delta):
 #rotation update
 	#check rotation inputs and calculate rotation speed
 	if (rot_input != 0):
-		currRotSpeed += rot_input * rotAccel * delta
+		currRotSpeed += rot_input * rotAccel * 0.1
 	else:
 		currRotSpeed = (currRotSpeed * rotDamping)
 	#cap rotation speed
@@ -73,23 +73,23 @@ func _process(delta):
 	var facing_vector = Vector2(cos(rotation),sin(rotation))
 	#check movement inputs and calculate velocity
 	if (move_input != 0):
-		currVelocity += move_input * facing_vector * moveAccel * delta
+		currVelocity += move_input * facing_vector * moveAccel
 	else:
 		currVelocity = (currVelocity * moveDamping)
 	#cap movement velocity by magnitude
 	currVelocity = currVelocity.limit_length(moveSpeedMax)
 	#print(currVelocity)
 	#actually move
-	position += currVelocity
+	position += currVelocity * delta
 	
 	if(position.x < 0-playerOffset):
-		position.x = screen_size.x+(playerOffset/2)
+		position.x = screen_size.x+(playerOffset/2.0)
 	elif(position.x > screen_size.x+playerOffset):
-		position.x = 0-(playerOffset/2)
+		position.x = 0-(playerOffset/2.0)
 	elif(position.y < 0-playerOffset):
-		position.y = screen_size.y+(playerOffset/2)
+		position.y = screen_size.y+(playerOffset/2.0)
 	elif(position.y > screen_size.y+playerOffset):
-		position.y = 0-(playerOffset/2)
+		position.y = 0-(playerOffset/2.0)
 	#position = position.clamp(Vector2.ZERO, screen_size)
 
 #shooting

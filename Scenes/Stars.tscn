@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwb2qlx0sr7f7"]
+
+[ext_resource type="Texture2D" uid="uid://fcgebp3nb37j" path="res://Sprites/stars.png" id="1_kpoyb"]
+[ext_resource type="Script" uid="uid://7g1s4rxmgsgr" path="res://Scripts/starschild.gd" id="2_s7tv2"]
+
+[node name="Stars" type="Node2D"]
+
+[node name="Stars1" type="Sprite2D" parent="."]
+position = Vector2(-640, 0)
+texture = ExtResource("1_kpoyb")
+script = ExtResource("2_s7tv2")
+
+[node name="Stars2" type="Sprite2D" parent="."]
+position = Vector2(640, 0)
+texture = ExtResource("1_kpoyb")
+script = ExtResource("2_s7tv2")
